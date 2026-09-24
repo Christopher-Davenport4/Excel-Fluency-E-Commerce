@@ -13,10 +13,8 @@ money moves through it, and one column looks like a stable customer ID but isn't
 breaks any retention analysis built on it. Every finding in this project was checked against the
 actual data, not assumed from a schema diagram.
 
-The work runs across fifteen tiers, moving from manual formula-based joins through Power Query,
-the Data Model and DAX, financial modeling, and VBA automation. Full scope, business framing,
-and the five traps this dataset contains on purpose live in
-[PROJECT_CHARTER.md](./PROJECT_CHARTER.md) (Approved, Revision R2).
+The work moves from manual formula-based joins through Power Query, the Data Model and DAX,
+financial modeling, and VBA automation.
 
 ---
 
@@ -37,10 +35,10 @@ and defending a real analytical workbook in interviews. A few things it delibera
 
 ## Status
 
-Tier 0, scoping and data inventory, is closed. Tier 1, structured tables and formula
-foundations, is next.
+Tiers 0 and 1 are closed. Tier 2, lookups, conditional aggregation, and the manual grain
+audit, is next.
 
-Last updated 22 September 2026.
+Last updated 24 September 2026.
 
 ---
 
@@ -122,8 +120,8 @@ Full column-by-column detail, data types, and key roles live in `DATA_DICTIONARY
 
 ## Findings so far
 
-Tier 0 confirmed, by checking the source files directly rather than assuming, that three of the
-charter's five deliberate traps are real and present in this data.
+Checking the source files directly, rather than assuming, turned up three data issues that would
+quietly produce wrong answers if handled naively.
 
 1. **The fan-out problem.** `order_items` and `order_payments` both carry multiple rows per
    order. A naive join on `order_id` alone, without the full composite key, multiplies rows and
@@ -145,24 +143,6 @@ charter's five deliberate traps are real and present in this data.
 
 The remaining two traps, partial boundary months and status/date column selection for revenue
 recognition, aren't investigated yet. They surface in Tier 2.
-
----
-
-## Repository structure
-
-```
-project4/
-├── PROJECT_CHARTER.md      full scope, business framing, the five traps, tier specs
-├── README.md               this file
-├── DATA_DICTIONARY.xlsx    formatted, color-coded table and column inventory
-├── METHODOLOGY.md          judgment calls and the reasoning behind each, not created yet
-├── MEASURES.md             DAX measures catalog, starting Tier 9, not created yet
-├── DECISIONS.md            running decision log, not created yet
-├── NOTES.md                accumulated tier closing-question answers, not created yet
-├── data/                   raw source CSVs, not committed, see Reproducing this environment
-├── vba/                    exported .bas and .cls modules, starting Tier 12
-└── output/                 PDF exports from the automation build, starting Tier 13
-```
 
 ---
 
@@ -190,7 +170,6 @@ project4/
 
 ## Documentation
 
-- `PROJECT_CHARTER.md` is the source of truth for scope, sequencing, and every tier's objective.
 - `DATA_DICTIONARY.xlsx` is the table and column inventory, built after Tier 0.
 - `METHODOLOGY.md` will hold the reasoning behind each judgment call, the duplicate-review
   resolution, the revenue recognition date, the boundary-month trimming. Gets created once
